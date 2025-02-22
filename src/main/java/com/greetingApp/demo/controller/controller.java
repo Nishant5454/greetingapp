@@ -12,7 +12,9 @@ import java.util.Map;
 
 public class controller {
    private final ObjectMapper objectMapper=new ObjectMapper();
+    private final ServiceLayer service;
 
+    @Autowired
     public controller(ServiceLayer service) {
         this.service = service;
     }
@@ -38,15 +40,25 @@ public class controller {
         //name=name.trim();
         return objectMapper.writeValueAsString(greeting.getName())+" is deleted from the Database";
     }
-    private ServiceLayer service;
-    @Autowired
-    public void GreetingController(ServiceLayer service){
-        this.service=service;
-    }
     @GetMapping("/service")
     public String getGreeting(){
         return service.getMeesage();
     }
+    @PutMapping("/firstname")
+    public String getGreetingviaFirstname(@RequestBody UserDto userDto) {
+        return service.getNameviaFirst(userDto.getFirstName());
+    }
+    @PutMapping("/lastname")
+    public String getGreetingviaLastname(@RequestBody UserDto userDto){
+        return service.getNameviaLast(userDto.getLastName());
+    }
+    @PutMapping ("/lastorfirst")
+    public String getGreetingviafirstandLast(@RequestBody UserDto userDto){
+        return service.getNameviafirstLast(userDto.getFirstName(),userDto.getLastName());
+    }
+
+
+
 
 
 }
